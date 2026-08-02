@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { VennDiagram, VennColors, formatVennDiagramCode } from 'react-venn';
 
 type ThemePresetName = 'classic' | 'pastel' | 'dark' | 'sunset' | 'emerald';
@@ -14,24 +14,47 @@ const THEME_PREVIEWS: Record<ThemePresetName, string[]> = {
 
 const REGION_KEYS_2 = ['A', 'B', 'AB'] as const;
 const REGION_KEYS_3 = ['A', 'B', 'C', 'AB', 'BC', 'CA', 'ABC'] as const;
+const REGION_KEYS_4 = ['A', 'B', 'C', 'D', 'AB', 'AC', 'AD', 'BC', 'BD', 'CD', 'ABC', 'ABD', 'ACD', 'BCD', 'ABCD'] as const;
 
 export default function App() {
   // ── Set count ──────────────────────────────────────────────────────────
-  const [setsCount, setSetsCount] = useState<2 | 3>(3);
+  const [setsCount, setSetsCount] = useState<2 | 3 | 4>(3);
 
   // ── Labels ─────────────────────────────────────────────────────────────
-  const [labelA, setLabelA] = useState('React');
-  const [labelB, setLabelB] = useState('TypeScript');
-  const [labelC, setLabelC] = useState('CSS');
+  const [labelA, setLabelA] = useState('A');
+  const [labelB, setLabelB] = useState('B');
+  const [labelC, setLabelC] = useState('C');
+  const [labelD, setLabelD] = useState('D');
 
   // ── Values ─────────────────────────────────────────────────────────────
-  const [valA, setValA]     = useState(12);
-  const [valB, setValB]     = useState(15);
-  const [valC, setValC]     = useState(10);
-  const [valAB, setValAB]   = useState(4);
-  const [valBC, setValBC]   = useState(5);
-  const [valCA, setValCA]   = useState(3);
-  const [valABC, setValABC] = useState(2);
+  const [valA, setValA]     = useState(1);
+  const [valB, setValB]     = useState(2);
+  const [valC, setValC]     = useState(3);
+  const [valD, setValD]     = useState(4);
+  const [valAB, setValAB]   = useState(5);
+  const [valBC, setValBC]   = useState(6);
+  const [valCA, setValCA]   = useState(7);
+  const [valAD, setValAD]   = useState(8);
+  const [valBD, setValBD]   = useState(9);
+  const [valCD, setValCD]   = useState(10);
+  const [valABC, setValABC] = useState(11);
+  const [valABD, setValABD] = useState(12);
+  const [valACD, setValACD] = useState(13);
+  const [valBCD, setValBCD] = useState(14);
+  const [valABCD, setValABCD] = useState(15);
+
+  useEffect(() => {
+    if (setsCount === 2) {
+      setValA(1); setValB(2); setValAB(3);
+    } else if (setsCount === 3) {
+      setValA(1); setValB(2); setValC(3);
+      setValAB(4); setValBC(5); setValCA(6); setValABC(7);
+    } else if (setsCount === 4) {
+      setValA(1); setValB(2); setValC(3); setValD(4);
+      setValAB(5); setValBC(6); setValCA(7); setValAD(8); setValBD(9); setValCD(10);
+      setValABC(11); setValABD(12); setValACD(13); setValBCD(14); setValABCD(15);
+    }
+  }, [setsCount]);
 
   // ── Layout ─────────────────────────────────────────────────────────────
   const [spacing, setSpacing]         = useState(0.5);
@@ -63,8 +86,9 @@ export default function App() {
 
   const totalForPercent = useMemo(() => {
     if (setsCount === 2) return valA + valB + valAB;
-    return valA + valB + valC + valAB + valBC + valCA + valABC;
-  }, [setsCount, valA, valB, valC, valAB, valBC, valCA, valABC]);
+    if (setsCount === 3) return valA + valB + valC + valAB + valBC + valCA + valABC;
+    return valA + valB + valC + valD + valAB + valCA + valAD + valBC + valBD + valCD + valABC + valABD + valACD + valBCD + valABCD;
+  }, [setsCount, valA, valB, valC, valD, valAB, valBC, valCA, valAD, valBD, valCD, valABC, valABD, valACD, valBCD, valABCD]);
 
   const valueFormat = useMemo(() => {
     switch (valueFormatMode) {
@@ -76,7 +100,7 @@ export default function App() {
   }, [valueFormatMode, totalForPercent]);
 
   // ── Visibility ─────────────────────────────────────────────────────────
-  const [showLabels, setShowLabels]   = useState(true);
+  const [showLabels, setShowLabels]   = useState(false);
   const [showValues, setShowValues]   = useState(true);
   const [showTooltip, setShowTooltip] = useState(true);
   const [animated, setAnimated]       = useState(true);
@@ -90,19 +114,38 @@ export default function App() {
       return [
         { name: labelA, sets: ['A'], value: valA },
         { name: labelB, sets: ['B'], value: valB },
-        { name: `${labelA} & ${labelB}`, sets: ['A', 'B'], value: valAB },
+        { name: `${labelA}${labelB}`, sets: ['A', 'B'], value: valAB },
+      ];
+    }
+    if (setsCount === 3) {
+      return [
+        { name: labelA, sets: ['A'], value: valA },
+        { name: labelB, sets: ['B'], value: valB },
+        { name: labelC, sets: ['C'], value: valC },
+        { name: `${labelA}${labelB}`, sets: ['A', 'B'], value: valAB },
+        { name: `${labelB}${labelC}`, sets: ['B', 'C'], value: valBC },
+        { name: `${labelC}${labelA}`, sets: ['A', 'C'], value: valCA },
+        { name: `${labelA}${labelB}${labelC}`, sets: ['A', 'B', 'C'], value: valABC },
       ];
     }
     return [
       { name: labelA, sets: ['A'], value: valA },
       { name: labelB, sets: ['B'], value: valB },
       { name: labelC, sets: ['C'], value: valC },
-      { name: `${labelA} & ${labelB}`, sets: ['A', 'B'], value: valAB },
-      { name: `${labelB} & ${labelC}`, sets: ['B', 'C'], value: valBC },
-      { name: `${labelC} & ${labelA}`, sets: ['A', 'C'], value: valCA },
-      { name: `${labelA} & ${labelB} & ${labelC}`, sets: ['A', 'B', 'C'], value: valABC },
+      { name: labelD, sets: ['D'], value: valD },
+      { name: `${labelA}${labelB}`, sets: ['A', 'B'], value: valAB },
+      { name: `${labelA}${labelC}`, sets: ['A', 'C'], value: valCA }, // internal id is AC but label uses CA
+      { name: `${labelA}${labelD}`, sets: ['A', 'D'], value: valAD },
+      { name: `${labelB}${labelC}`, sets: ['B', 'C'], value: valBC },
+      { name: `${labelB}${labelD}`, sets: ['B', 'D'], value: valBD },
+      { name: `${labelC}${labelD}`, sets: ['C', 'D'], value: valCD },
+      { name: `${labelA}${labelB}${labelC}`, sets: ['A', 'B', 'C'], value: valABC },
+      { name: `${labelA}${labelB}${labelD}`, sets: ['A', 'B', 'D'], value: valABD },
+      { name: `${labelA}${labelC}${labelD}`, sets: ['A', 'C', 'D'], value: valACD },
+      { name: `${labelB}${labelC}${labelD}`, sets: ['B', 'C', 'D'], value: valBCD },
+      { name: `${labelA}${labelB}${labelC}${labelD}`, sets: ['A', 'B', 'C', 'D'], value: valABCD },
     ];
-  }, [setsCount, labelA, labelB, labelC, valA, valB, valC, valAB, valBC, valCA, valABC]);
+  }, [setsCount, labelA, labelB, labelC, labelD, valA, valB, valC, valD, valAB, valBC, valCA, valAD, valBD, valCD, valABC, valABD, valACD, valBCD, valABCD]);
 
   // ── Code export ────────────────────────────────────────────────────────
   const exportedCode = useMemo(() => {
@@ -135,14 +178,17 @@ export default function App() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleToggleSetsCount = (count: 2 | 3) => {
+  const handleToggleSetsCount = (count: 2 | 3 | 4) => {
     setSetsCount(count);
-    setSpacing(count === 2 ? 0.55 : 0.5);
+    if (count === 4) setSpacing(0);
+    else setSpacing(count === 2 ? 0.55 : 0.5);
   };
 
   const activeRegionKeys = setsCount === 2
     ? (REGION_KEYS_2 as readonly string[])
-    : (REGION_KEYS_3 as readonly string[]);
+    : setsCount === 3 
+      ? (REGION_KEYS_3 as readonly string[])
+      : (REGION_KEYS_4 as readonly string[]);
 
   return (
     <div className="app-container">
@@ -177,6 +223,9 @@ export default function App() {
               <button className={`tab-btn ${setsCount === 3 ? 'active' : ''}`} onClick={() => handleToggleSetsCount(3)}>
                 3-Set Venn
               </button>
+              <button className={`tab-btn ${setsCount === 4 ? 'active' : ''}`} onClick={() => handleToggleSetsCount(4)}>
+                4-Set Venn
+              </button>
             </div>
           </div>
 
@@ -186,8 +235,11 @@ export default function App() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <input type="text" className="input-field" value={labelA} onChange={e => setLabelA(e.target.value)} placeholder="Set A" />
               <input type="text" className="input-field" value={labelB} onChange={e => setLabelB(e.target.value)} placeholder="Set B" />
-              {setsCount === 3 && (
+              {setsCount >= 3 && (
                 <input type="text" className="input-field" value={labelC} onChange={e => setLabelC(e.target.value)} placeholder="Set C" />
+              )}
+              {setsCount >= 4 && (
+                <input type="text" className="input-field" value={labelD} onChange={e => setLabelD(e.target.value)} placeholder="Set D" />
               )}
             </div>
           </div>
@@ -199,12 +251,22 @@ export default function App() {
               {[
                 { label: `${labelA} only`, val: valA, set: setValA },
                 { label: `${labelB} only`, val: valB, set: setValB },
-                ...(setsCount === 3 ? [{ label: `${labelC} only`, val: valC, set: setValC }] : []),
+                ...(setsCount >= 3 ? [{ label: `${labelC} only`, val: valC, set: setValC }] : []),
+                ...(setsCount >= 4 ? [{ label: `${labelD} only`, val: valD, set: setValD }] : []),
                 { label: `${labelA} ∩ ${labelB}`, val: valAB, set: setValAB },
-                ...(setsCount === 3 ? [
+                ...(setsCount >= 3 ? [
                   { label: `${labelB} ∩ ${labelC}`, val: valBC, set: setValBC },
                   { label: `${labelC} ∩ ${labelA}`, val: valCA, set: setValCA },
                   { label: `${labelA} ∩ ${labelB} ∩ ${labelC}`, val: valABC, set: setValABC },
+                ] : []),
+                ...(setsCount >= 4 ? [
+                  { label: `${labelA} ∩ ${labelD}`, val: valAD, set: setValAD },
+                  { label: `${labelB} ∩ ${labelD}`, val: valBD, set: setValBD },
+                  { label: `${labelC} ∩ ${labelD}`, val: valCD, set: setValCD },
+                  { label: `${labelA} ∩ ${labelB} ∩ ${labelD}`, val: valABD, set: setValABD },
+                  { label: `${labelA} ∩ ${labelC} ∩ ${labelD}`, val: valACD, set: setValACD },
+                  { label: `${labelB} ∩ ${labelC} ∩ ${labelD}`, val: valBCD, set: setValBCD },
+                  { label: `${labelA} ∩ ${labelB} ∩ ${labelC} ∩ ${labelD}`, val: valABCD, set: setValABCD },
                 ] : []),
               ].map(({ label, val, set }) => (
                 <div key={label} className="input-grid">
