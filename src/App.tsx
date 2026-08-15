@@ -15,33 +15,56 @@ const THEME_PREVIEWS: Record<ThemePresetName, string[]> = {
 const REGION_KEYS_2 = ['A', 'B', 'AB'] as const;
 const REGION_KEYS_3 = ['A', 'B', 'C', 'AB', 'BC', 'CA', 'ABC'] as const;
 const REGION_KEYS_4 = ['A', 'B', 'C', 'D', 'AB', 'AC', 'AD', 'BC', 'BD', 'CD', 'ABC', 'ABD', 'ACD', 'BCD', 'ABCD'] as const;
+const REGION_KEYS_5 = ['A', 'B', 'C', 'D', 'E', 'AB', 'AC', 'AD', 'AE', 'BC', 'BD', 'BE', 'CD', 'CE', 'DE', 'ABC', 'ABD', 'ABE', 'ACD', 'ACE', 'ADE', 'BCD', 'BCE', 'BDE', 'CDE', 'ABCD', 'ABCE', 'ABDE', 'ACDE', 'BCDE', 'ABCDE'] as const;
 
 export default function App() {
   // ── Set count ──────────────────────────────────────────────────────────
-  const [setsCount, setSetsCount] = useState<2 | 3 | 4>(3);
+  const [setsCount, setSetsCount] = useState<2 | 3 | 4 | 5>(3);
 
   // ── Labels ─────────────────────────────────────────────────────────────
   const [labelA, setLabelA] = useState('A');
   const [labelB, setLabelB] = useState('B');
   const [labelC, setLabelC] = useState('C');
   const [labelD, setLabelD] = useState('D');
+  const [labelE, setLabelE] = useState('E');
 
   // ── Values ─────────────────────────────────────────────────────────────
   const [valA, setValA]     = useState(1);
   const [valB, setValB]     = useState(2);
   const [valC, setValC]     = useState(3);
   const [valD, setValD]     = useState(4);
-  const [valAB, setValAB]   = useState(5);
-  const [valBC, setValBC]   = useState(6);
-  const [valCA, setValCA]   = useState(7);
+  const [valE, setValE]     = useState(5);
+  const [valAB, setValAB]   = useState(6);
+  const [valAC, setValAC]   = useState(7);
   const [valAD, setValAD]   = useState(8);
-  const [valBD, setValBD]   = useState(9);
-  const [valCD, setValCD]   = useState(10);
-  const [valABC, setValABC] = useState(11);
-  const [valABD, setValABD] = useState(12);
-  const [valACD, setValACD] = useState(13);
-  const [valBCD, setValBCD] = useState(14);
-  const [valABCD, setValABCD] = useState(15);
+  const [valAE, setValAE]   = useState(9);
+  const [valBC, setValBC]   = useState(10);
+  const [valBD, setValBD]   = useState(11);
+  const [valBE, setValBE]   = useState(12);
+  const [valCD, setValCD]   = useState(13);
+  const [valCE, setValCE]   = useState(14);
+  const [valDE, setValDE]   = useState(15);
+  const [valABC, setValABC] = useState(16);
+  const [valABD, setValABD] = useState(17);
+  const [valABE, setValABE] = useState(18);
+  const [valACD, setValACD] = useState(19);
+  const [valACE, setValACE] = useState(20);
+  const [valADE, setValADE] = useState(21);
+  const [valBCD, setValBCD] = useState(22);
+  const [valBCE, setValBCE] = useState(23);
+  const [valBDE, setValBDE] = useState(24);
+  const [valCDE, setValCDE] = useState(25);
+  const [valABCD, setValABCD] = useState(26);
+  const [valABCE, setValABCE] = useState(27);
+  const [valABDE, setValABDE] = useState(28);
+  const [valACDE, setValACDE] = useState(29);
+  const [valBCDE, setValBCDE] = useState(30);
+  const [valABCDE, setValABCDE] = useState(31);
+  
+  // Notice: to avoid breaking existing 2,3,4 sets in state, I will manually map valCA to valAC where appropriate if it existed, but here I unified to AC.
+  // Actually, wait, the original code used valCA.
+  // Let me restore valCA and keep the rest.
+  const [valCA, setValCA]   = useState(7);
 
   useEffect(() => {
     if (setsCount === 2) {
@@ -53,13 +76,22 @@ export default function App() {
       setValA(1); setValB(2); setValC(3); setValD(4);
       setValAB(5); setValBC(6); setValCA(7); setValAD(8); setValBD(9); setValCD(10);
       setValABC(11); setValABD(12); setValACD(13); setValBCD(14); setValABCD(15);
+    } else if (setsCount === 5) {
+      setValA(1); setValB(2); setValC(3); setValD(4); setValE(5);
+      setValAB(6); setValAC(7); setValAD(8); setValAE(9);
+      setValBC(10); setValBD(11); setValBE(12);
+      setValCD(13); setValCE(14); setValDE(15);
+      setValABC(16); setValABD(17); setValABE(18); setValACD(19); setValACE(20); setValADE(21);
+      setValBCD(22); setValBCE(23); setValBDE(24); setValCDE(25);
+      setValABCD(26); setValABCE(27); setValABDE(28); setValACDE(29); setValBCDE(30);
+      setValABCDE(31);
     }
   }, [setsCount]);
 
   // ── Layout ─────────────────────────────────────────────────────────────
   const [spacing, setSpacing]         = useState(0.5);
   const [strokeWidth, setStrokeWidth] = useState(2);
-  const [fillOpacity, setFillOpacity] = useState(0.6);
+  const [fillOpacity, setFillOpacity] = useState(0.8);
   const [fontSize, setFontSize]       = useState(13);
 
   // ── Theme ──────────────────────────────────────────────────────────────
@@ -81,14 +113,17 @@ export default function App() {
     });
   };
 
+  const activeColors = Object.keys(colorOverrides).length > 0 ? colorOverrides : undefined;
+
   // ── Value format ───────────────────────────────────────────────────────
   const [valueFormatMode, setValueFormatMode] = useState<ValueFormatMode>('raw');
 
   const totalForPercent = useMemo(() => {
     if (setsCount === 2) return valA + valB + valAB;
     if (setsCount === 3) return valA + valB + valC + valAB + valBC + valCA + valABC;
-    return valA + valB + valC + valD + valAB + valCA + valAD + valBC + valBD + valCD + valABC + valABD + valACD + valBCD + valABCD;
-  }, [setsCount, valA, valB, valC, valD, valAB, valBC, valCA, valAD, valBD, valCD, valABC, valABD, valACD, valBCD, valABCD]);
+    if (setsCount === 4) return valA + valB + valC + valD + valAB + valCA + valAD + valBC + valBD + valCD + valABC + valABD + valACD + valBCD + valABCD;
+    return valA + valB + valC + valD + valE + valAB + valAC + valAD + valAE + valBC + valBD + valBE + valCD + valCE + valDE + valABC + valABD + valABE + valACD + valACE + valADE + valBCD + valBCE + valBDE + valCDE + valABCD + valABCE + valABDE + valACDE + valBCDE + valABCDE;
+  }, [setsCount, valA, valB, valC, valD, valE, valAB, valBC, valCA, valAC, valAD, valAE, valBD, valBE, valCD, valCE, valDE, valABC, valABD, valABE, valACD, valACE, valADE, valBCD, valBCE, valBDE, valCDE, valABCD, valABCE, valABDE, valACDE, valBCDE, valABCDE]);
 
   const valueFormat = useMemo(() => {
     switch (valueFormatMode) {
@@ -128,24 +163,59 @@ export default function App() {
         { name: `${labelA}${labelB}${labelC}`, sets: ['A', 'B', 'C'], value: valABC },
       ];
     }
+    if (setsCount === 4) {
+      return [
+        { name: labelA, sets: ['A'], value: valA },
+        { name: labelB, sets: ['B'], value: valB },
+        { name: labelC, sets: ['C'], value: valC },
+        { name: labelD, sets: ['D'], value: valD },
+        { name: `${labelA}${labelB}`, sets: ['A', 'B'], value: valAB },
+        { name: `${labelA}${labelC}`, sets: ['A', 'C'], value: valCA }, // internal id is AC but label uses CA
+        { name: `${labelA}${labelD}`, sets: ['A', 'D'], value: valAD },
+        { name: `${labelB}${labelC}`, sets: ['B', 'C'], value: valBC },
+        { name: `${labelB}${labelD}`, sets: ['B', 'D'], value: valBD },
+        { name: `${labelC}${labelD}`, sets: ['C', 'D'], value: valCD },
+        { name: `${labelA}${labelB}${labelC}`, sets: ['A', 'B', 'C'], value: valABC },
+        { name: `${labelA}${labelB}${labelD}`, sets: ['A', 'B', 'D'], value: valABD },
+        { name: `${labelA}${labelC}${labelD}`, sets: ['A', 'C', 'D'], value: valACD },
+        { name: `${labelB}${labelC}${labelD}`, sets: ['B', 'C', 'D'], value: valBCD },
+        { name: `${labelA}${labelB}${labelC}${labelD}`, sets: ['A', 'B', 'C', 'D'], value: valABCD },
+      ];
+    }
     return [
       { name: labelA, sets: ['A'], value: valA },
       { name: labelB, sets: ['B'], value: valB },
       { name: labelC, sets: ['C'], value: valC },
       { name: labelD, sets: ['D'], value: valD },
+      { name: labelE, sets: ['E'], value: valE },
       { name: `${labelA}${labelB}`, sets: ['A', 'B'], value: valAB },
-      { name: `${labelA}${labelC}`, sets: ['A', 'C'], value: valCA }, // internal id is AC but label uses CA
+      { name: `${labelA}${labelC}`, sets: ['A', 'C'], value: valAC },
       { name: `${labelA}${labelD}`, sets: ['A', 'D'], value: valAD },
+      { name: `${labelA}${labelE}`, sets: ['A', 'E'], value: valAE },
       { name: `${labelB}${labelC}`, sets: ['B', 'C'], value: valBC },
       { name: `${labelB}${labelD}`, sets: ['B', 'D'], value: valBD },
+      { name: `${labelB}${labelE}`, sets: ['B', 'E'], value: valBE },
       { name: `${labelC}${labelD}`, sets: ['C', 'D'], value: valCD },
+      { name: `${labelC}${labelE}`, sets: ['C', 'E'], value: valCE },
+      { name: `${labelD}${labelE}`, sets: ['D', 'E'], value: valDE },
       { name: `${labelA}${labelB}${labelC}`, sets: ['A', 'B', 'C'], value: valABC },
       { name: `${labelA}${labelB}${labelD}`, sets: ['A', 'B', 'D'], value: valABD },
+      { name: `${labelA}${labelB}${labelE}`, sets: ['A', 'B', 'E'], value: valABE },
       { name: `${labelA}${labelC}${labelD}`, sets: ['A', 'C', 'D'], value: valACD },
+      { name: `${labelA}${labelC}${labelE}`, sets: ['A', 'C', 'E'], value: valACE },
+      { name: `${labelA}${labelD}${labelE}`, sets: ['A', 'D', 'E'], value: valADE },
       { name: `${labelB}${labelC}${labelD}`, sets: ['B', 'C', 'D'], value: valBCD },
+      { name: `${labelB}${labelC}${labelE}`, sets: ['B', 'C', 'E'], value: valBCE },
+      { name: `${labelB}${labelD}${labelE}`, sets: ['B', 'D', 'E'], value: valBDE },
+      { name: `${labelC}${labelD}${labelE}`, sets: ['C', 'D', 'E'], value: valCDE },
       { name: `${labelA}${labelB}${labelC}${labelD}`, sets: ['A', 'B', 'C', 'D'], value: valABCD },
+      { name: `${labelA}${labelB}${labelC}${labelE}`, sets: ['A', 'B', 'C', 'E'], value: valABCE },
+      { name: `${labelA}${labelB}${labelD}${labelE}`, sets: ['A', 'B', 'D', 'E'], value: valABDE },
+      { name: `${labelA}${labelC}${labelD}${labelE}`, sets: ['A', 'C', 'D', 'E'], value: valACDE },
+      { name: `${labelB}${labelC}${labelD}${labelE}`, sets: ['B', 'C', 'D', 'E'], value: valBCDE },
+      { name: `${labelA}${labelB}${labelC}${labelD}${labelE}`, sets: ['A', 'B', 'C', 'D', 'E'], value: valABCDE },
     ];
-  }, [setsCount, labelA, labelB, labelC, labelD, valA, valB, valC, valD, valAB, valBC, valCA, valAD, valBD, valCD, valABC, valABD, valACD, valBCD, valABCD]);
+  }, [setsCount, labelA, labelB, labelC, labelD, labelE, valA, valB, valC, valD, valE, valAB, valAC, valBC, valCA, valAD, valAE, valBD, valBE, valCD, valCE, valDE, valABC, valABD, valABE, valACD, valACE, valADE, valBCD, valBCE, valBDE, valCDE, valABCD, valABCE, valABDE, valACDE, valBCDE, valABCDE]);
 
   // ── Code export ────────────────────────────────────────────────────────
   const exportedCode = useMemo(() => {
@@ -153,7 +223,7 @@ export default function App() {
       setsCount,
       data,
       theme: selectedTheme,
-      colors: Object.keys(colorOverrides).length > 0 ? colorOverrides : undefined,
+      colors: activeColors,
       spacing,
       strokeWidth,
       fillOpacity,
@@ -168,7 +238,7 @@ export default function App() {
     }, {
       includeValueFormat: valueFormatMode !== 'raw'
     });
-  }, [setsCount, data, selectedTheme, colorOverrides, spacing, strokeWidth, fillOpacity, fontSize,
+  }, [setsCount, data, selectedTheme, activeColors, spacing, strokeWidth, fillOpacity, fontSize,
       strokeColor, hoverStrokeColor, showLabels, showValues, showTooltip,
       animated, animationDuration, valueFormatMode]);
 
@@ -178,9 +248,9 @@ export default function App() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleToggleSetsCount = (count: 2 | 3 | 4) => {
+  const handleToggleSetsCount = (count: 2 | 3 | 4 | 5) => {
     setSetsCount(count);
-    if (count === 4) setSpacing(0);
+    if (count >= 4) setSpacing(0);
     else setSpacing(count === 2 ? 0.55 : 0.5);
   };
 
@@ -188,7 +258,9 @@ export default function App() {
     ? (REGION_KEYS_2 as readonly string[])
     : setsCount === 3 
       ? (REGION_KEYS_3 as readonly string[])
-      : (REGION_KEYS_4 as readonly string[]);
+      : setsCount === 4
+        ? (REGION_KEYS_4 as readonly string[])
+        : (REGION_KEYS_5 as readonly string[]);
 
   return (
     <div className="app-container">
@@ -226,6 +298,9 @@ export default function App() {
               <button className={`tab-btn ${setsCount === 4 ? 'active' : ''}`} onClick={() => handleToggleSetsCount(4)}>
                 4-Set Venn
               </button>
+              <button className={`tab-btn ${setsCount === 5 ? 'active' : ''}`} onClick={() => handleToggleSetsCount(5)}>
+                5-Set Venn
+              </button>
             </div>
           </div>
 
@@ -241,6 +316,9 @@ export default function App() {
               {setsCount >= 4 && (
                 <input type="text" className="input-field" value={labelD} onChange={e => setLabelD(e.target.value)} placeholder="Set D" />
               )}
+              {setsCount >= 5 && (
+                <input type="text" className="input-field" value={labelE} onChange={e => setLabelE(e.target.value)} placeholder="Set E" />
+              )}
             </div>
           </div>
 
@@ -253,10 +331,11 @@ export default function App() {
                 { label: `${labelB} only`, val: valB, set: setValB },
                 ...(setsCount >= 3 ? [{ label: `${labelC} only`, val: valC, set: setValC }] : []),
                 ...(setsCount >= 4 ? [{ label: `${labelD} only`, val: valD, set: setValD }] : []),
+                ...(setsCount >= 5 ? [{ label: `${labelE} only`, val: valE, set: setValE }] : []),
                 { label: `${labelA} ∩ ${labelB}`, val: valAB, set: setValAB },
                 ...(setsCount >= 3 ? [
                   { label: `${labelB} ∩ ${labelC}`, val: valBC, set: setValBC },
-                  { label: `${labelC} ∩ ${labelA}`, val: valCA, set: setValCA },
+                  { label: `${labelC} ∩ ${labelA}`, val: setsCount === 3 ? valCA : valAC, set: setsCount === 3 ? setValCA : setValAC },
                   { label: `${labelA} ∩ ${labelB} ∩ ${labelC}`, val: valABC, set: setValABC },
                 ] : []),
                 ...(setsCount >= 4 ? [
@@ -267,6 +346,23 @@ export default function App() {
                   { label: `${labelA} ∩ ${labelC} ∩ ${labelD}`, val: valACD, set: setValACD },
                   { label: `${labelB} ∩ ${labelC} ∩ ${labelD}`, val: valBCD, set: setValBCD },
                   { label: `${labelA} ∩ ${labelB} ∩ ${labelC} ∩ ${labelD}`, val: valABCD, set: setValABCD },
+                ] : []),
+                ...(setsCount >= 5 ? [
+                  { label: `${labelA} ∩ ${labelE}`, val: valAE, set: setValAE },
+                  { label: `${labelB} ∩ ${labelE}`, val: valBE, set: setValBE },
+                  { label: `${labelC} ∩ ${labelE}`, val: valCE, set: setValCE },
+                  { label: `${labelD} ∩ ${labelE}`, val: valDE, set: setValDE },
+                  { label: `${labelA} ∩ ${labelB} ∩ ${labelE}`, val: valABE, set: setValABE },
+                  { label: `${labelA} ∩ ${labelC} ∩ ${labelE}`, val: valACE, set: setValACE },
+                  { label: `${labelA} ∩ ${labelD} ∩ ${labelE}`, val: valADE, set: setValADE },
+                  { label: `${labelB} ∩ ${labelC} ∩ ${labelE}`, val: valBCE, set: setValBCE },
+                  { label: `${labelB} ∩ ${labelD} ∩ ${labelE}`, val: valBDE, set: setValBDE },
+                  { label: `${labelC} ∩ ${labelD} ∩ ${labelE}`, val: valCDE, set: setValCDE },
+                  { label: `${labelA} ∩ ${labelB} ∩ ${labelC} ∩ ${labelE}`, val: valABCE, set: setValABCE },
+                  { label: `${labelA} ∩ ${labelB} ∩ ${labelD} ∩ ${labelE}`, val: valABDE, set: setValABDE },
+                  { label: `${labelA} ∩ ${labelC} ∩ ${labelD} ∩ ${labelE}`, val: valACDE, set: setValACDE },
+                  { label: `${labelB} ∩ ${labelC} ∩ ${labelD} ∩ ${labelE}`, val: valBCDE, set: setValBCDE },
+                  { label: `${labelA} ∩ ${labelB} ∩ ${labelC} ∩ ${labelD} ∩ ${labelE}`, val: valABCDE, set: setValABCDE },
                 ] : []),
               ].map(({ label, val, set }) => (
                 <div key={label} className="input-grid">
@@ -304,7 +400,7 @@ export default function App() {
               setsCount={setsCount}
               data={data}
               theme={selectedTheme}
-              colors={Object.keys(colorOverrides).length > 0 ? colorOverrides : undefined}
+              colors={activeColors}
               width={400}
               height={400}
               spacing={spacing}
